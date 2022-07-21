@@ -1,0 +1,21 @@
+Package: avt
+Title: Amplicon variance tracker (avt)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Barbara",
+           family = "Shih",
+           role = c("aut", "cre"),
+           email = "barbara.shih@roslin.ed.ac.uk",
+           comment = c(ORCID = "https://orcid.org/0000-0002-3676-3304"))
+Description: This tool tracks microbiome variance and identifies bacterial genera responsible for significant variance shifts using 16S rRNA gene metabarcoding for longitudinal data. The unique value of this approach is that it goes beyond presence, absence and abundance of genera, as is commonly the case in 16S microbiome studies. Since gut and lung microbiome analyses use DNA extracted from faecal and sputum samples respectively, they only represent a distribution of their respective anatomical compartments. So, making inferences based on presence and absence of individual units (genera) of the distribution might be misleading. In this prototype tool, variance is tracked using three microbiome attributes/parameters i.e. prevalence, abundance and co-occurrence network along a temporal scale identifying genera responsible for dramatic shifts in variance at each temporal point..
+License: GPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Depends: R (>= 4.1),
+Imports: ape, dplyr, igraph, microbiome, phyloseq, plyr, stringr,
+        reshape2, tidyverse, ggplot2
+NeedsCompilation: no
+Packaged: 2022-07-01 09:17:48 UTC; Bala
+Author: Barbara Shih [aut, cre] (<https://orcid.org/0000-0002-3676-3304>)
+Maintainer: Barbara Shih <barbara.shih@roslin.ed.ac.uk>
