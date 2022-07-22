@@ -1,0 +1,31 @@
+setwd("D:/work/adrian/avt_test_data")
+centrality_p_threshold <- 1
+centrality_corr_threshold_upper <- 0
+centrality_corr_threshold_lower <- 0
+organised_data <- avt_data(data_dir="SRP109534", grouping_column="treatment_group_curated", out_dir= "out")
+top_genera <- topGenera(avt_dat=organised_data, top_number=50, out_dir="out", centrality_p=centrality_p_threshold, centrality_r_upper=centrality_corr_threshold_upper, centrality_r_lower=centrality_corr_threshold_lower)
+top_genera_variance <- calculateVariance(avt_dat=organised_data, top_genera=top_genera, out_dir="out", top_genera_num2=100, top_eigen=5)
+plotEigeSum(top_genera_variance, height = 6, width = 15) # plot the data
+orderedVarianceChange(top_genera_variance)
+
+
+
+centrality_p_threshold <- 0.05
+centrality_corr_threshold_upper <- 0.7
+centrality_corr_threshold_lower <- 0
+organised_data <- avt_data(data_dir="SRP221070", grouping_column="Sampling.point", out_dir= "out")
+top_genera <- topGenera(avt_dat=organised_data, top_number=50, out_dir="out", centrality_p=centrality_p_threshold, centrality_r_upper=centrality_corr_threshold_upper, centrality_r_lower=centrality_corr_threshold_lower)
+top_genera_variance <- calculateVariance(avt_dat=organised_data, top_genera=top_genera, out_dir="out", top_genera_num2=100, top_eigen=5)
+plotEigeSum(top_genera_variance, out_dir= "out", height = 6, width = 15) # plot the data
+
+
+
+
+setwd("K:/muwonge_fellowship/Barbara/2019-12-06-_9175_-Adrian_Muwonge_longitudinal_microbiome_16S/avt_test_data")
+
+organised_data <- avt_data(data_dir="SRP221070", grouping_column="Sampling.point")
+top_genera <- topGenera(avt_dat=organised_data)
+top_genera_variance <- calculateVariance(avt_dat=organised_data, top_genera=top_genera)
+plotEigeSum(top_genera_variance) 
+variance_change_summary <- orderedVarianceChange(top_genera_variance)
+

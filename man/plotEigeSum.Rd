@@ -4,16 +4,16 @@
 \alias{plotEigeSum}
 \title{Plot the change in variance}
 \usage{
-plotEigeSum(avt_var, out_dir, height = 6, width = 10)
+plotEigeSum(avt_var, out_dir = "avt_out", height = 6, width = 10)
 }
 \arguments{
-\item{avt_var}{Numeric vector.}
+\item{avt_var}{List. Output from calculateVariance().}
 
-\item{out_dir}{Numeric vector.}
+\item{out_dir}{String. File path to output directory.}
 
-\item{height}{Numeric vector.}
+\item{height}{Numeric. Height of the output PDF plot.}
 
-\item{width}{Numeric vector.}
+\item{width}{Numeric. Width of the output PDF plot.}
 }
 \description{
 Plot the change in variance

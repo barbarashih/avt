@@ -6,7 +6,7 @@
 #' @param y A vector with of Genus that should be ignored.
 
 #' @export
-cleanGenus <- function(x, y = vector()){
+cleanGenera <- function(x, y = vector()){
 	default_genus_to_ignore = c("Allorhizobium.Neorhizobium", 
 								"bacterium episymbiont of Kiwa sp.",
 								"Bacteroidia bacterium canine oral taxon 187",

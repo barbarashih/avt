@@ -2,25 +2,28 @@
 #'
 #' This tool tracks microbiome variance and identifies bacterial genera responsible for significant variance shifts using 16S rRNA gene metabarcoding for longitudinal data. 
 #' @import dplyr
-#' @param data_dir Numeric vector.
-#' @param grouping_column Numeric vector.
-#' @param out_dir Numeric vector.
-#' @param count_filename Numeric vector.
-#' @param taxa_filename Numeric vector.
-#' @param meta_filename Numeric vector.
-#' @param tree_filename Numeric vector.
-#' @param f_taxaconfidence Numeric vector.
-#' @param f_grouping_inclusion Numeric vector.
-#' @param min_req_sample_number Numeric vector.
+#' @param data_dir String. File path to input directory. 
+#' @param grouping_column String. Column name within the metadata table for grouping samples.
+#' @param out_dir String. File path to output directory.
+#' @param count_filename String. Input file name for count file. Default = "OTU.txt". Expected output from Qiime2 with comment lines removed.
+#' @param taxa_filename String. Input file name for count file. Default = "taxonomy.txt". Expected output from Qiime2 with comment lines removed.
+#' @param meta_filename String. Input file name for count file. Default = "MetaDB.txt". Expected output from Qiime2 with comment lines removed.
+#' @param tree_filename String. Input file name for count file. Default = "tree.nwk". The required file format is newick tree.
+#' @param taxaconfidence Numeric. Taxa confidence value. Default value = 0.9.
+#' @param grouping_inclusion String vector. If only specific groups should be included in the analysis, indicate them here.
+#' @param min_req_sample_number Numeric vector. Minimum number of samples required per group. Default = 8.
 #'
+#' @return list 
 #' @export
 
-avt_data <- function(data_dir, grouping_column, out_dir ,count_filename="OTU.txt", taxa_filename="taxonomy.tsv", meta_filename="MetaDB.txt", tree_filename="tree.nwk", f_taxaconfidence=0.9, f_grouping_inclusion=vector(), min_req_sample_number =8){
+avt_data <- function(data_dir, grouping_column, out_dir= "avt_out" ,count_filename="OTU.txt", taxa_filename="taxonomy.tsv", meta_filename="MetaDB.txt", tree_filename="tree.nwk", taxaconfidence=0.9, grouping_inclusion=vector(), min_req_sample_number =8){
 	 
 	# read in data
 	f_study_name=basename(data_dir)
+	# create output directory
 	dir.create(out_dir, showWarnings = FALSE)
-
+	
+	# organise taxa information
 	f_taxa <- utils::read.delim(paste(data_dir,taxa_filename,sep="/"),  header = T, sep="\t")
 	# if taxa table is not already formatted, format it so that it contains the genus column
 	if(!("Kingdom" %in% colnames(f_taxa))){
@@ -39,14 +42,14 @@ avt_data <- function(data_dir, grouping_column, out_dir ,count_filename="OTU.txt
 		f_taxa$Genus_word_and_num <- stringr::str_detect(f_taxa$Genus,"[:alpha:] [:digit:]")
 		f_taxa$Genus_word_first <- sapply(strsplit(f_taxa$Genus, " "), function(x)x[1])
 		f_taxa$Genus <- ifelse((f_taxa$Genus_word_count ==2) & f_taxa$Genus_word_and_num, f_taxa$Genus_word_first, f_taxa$Genus)
-		f_taxa <- cleanGenus(f_taxa)
-		f_taxa$Genus <- ifelse(f_taxa$Confidence < f_taxaconfidence, "Low_confidence", f_taxa$Genus)
+		f_taxa <- cleanGenera(f_taxa)
+		f_taxa$Genus <- ifelse(f_taxa$Confidence < taxaconfidence, "Low_confidence", f_taxa$Genus)
 		f_taxa <- f_taxa[!(f_taxa$Genus %in% "Low_confidence"),]
 		f_taxa <- f_taxa[!is.na(f_taxa$Genus),]
 		row.names(f_taxa) <- f_taxa$Feature.ID
 		# print out the number of read in each taxa 
 		genus_count <- stats::aggregate(data=f_taxa, Feature.ID~Genus, length)
-		genus_count_out_fp <- paste(out_dir, "/", "taxa_used_with_taxaConfidence", f_taxaconfidence, ".csv", sep="")
+		genus_count_out_fp <- paste(out_dir, "/", "taxa_used_with_taxaConfidence", taxaconfidence, ".csv", sep="")
 		utils::write.csv(genus_count, genus_count_out_fp, row.names=FALSE)
 		
 		f_taxa <- f_taxa[,c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus")]
@@ -69,8 +72,8 @@ avt_data <- function(data_dir, grouping_column, out_dir ,count_filename="OTU.txt
 	f_EXPname <- phyloseq::phyloseq(f_otu,f_taxa,f_meta,f_OTU_tree)
 	f_OTU <- phyloseq::otu_table(as.matrix(f_otu), taxa_are_rows = FALSE)
 	# Sample groups
-	if(length(f_grouping_inclusion)>0){
-		f_meta <- f_meta[f_meta[[grouping_column]] %in% f_grouping_inclusion,]
+	if(length(grouping_inclusion)>0){
+		f_meta <- f_meta[f_meta[[grouping_column]] %in% grouping_inclusion,]
 	}
 	f_sample_groups <- split(row.names(f_meta), f_meta[[grouping_column]])
 	for(group_idx in 1:length(f_sample_groups)){
@@ -91,7 +94,7 @@ avt_data <- function(data_dir, grouping_column, out_dir ,count_filename="OTU.txt
 				otu = f_OTU,
 				otu_tree = f_OTU_tree,
 				grouping=f_sample_groups,
-				taxa_confidence=f_taxaconfidence
+				taxa_confidence=taxaconfidence
 			)
 		return(out_list)
 	}

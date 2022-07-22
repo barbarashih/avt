@@ -7,36 +7,39 @@
 avt_data(
   data_dir,
   grouping_column,
-  out_dir,
+  out_dir = "avt_out",
   count_filename = "OTU.txt",
   taxa_filename = "taxonomy.tsv",
   meta_filename = "MetaDB.txt",
   tree_filename = "tree.nwk",
-  f_taxaconfidence = 0.9,
-  f_grouping_inclusion = vector(),
+  taxaconfidence = 0.9,
+  grouping_inclusion = vector(),
   min_req_sample_number = 8
 )
 }
 \arguments{
-\item{data_dir}{Numeric vector.}
+\item{data_dir}{String. File path to input directory.}
 
-\item{grouping_column}{Numeric vector.}
+\item{grouping_column}{String. Column name within the metadata table for grouping samples.}
 
-\item{out_dir}{Numeric vector.}
+\item{out_dir}{String. File path to output directory.}
 
-\item{count_filename}{Numeric vector.}
+\item{count_filename}{String. Input file name for count file. Default = "OTU.txt". Expected output from Qiime2 with comment lines removed.}
 
-\item{taxa_filename}{Numeric vector.}
+\item{taxa_filename}{String. Input file name for count file. Default = "taxonomy.txt". Expected output from Qiime2 with comment lines removed.}
 
-\item{meta_filename}{Numeric vector.}
+\item{meta_filename}{String. Input file name for count file. Default = "MetaDB.txt". Expected output from Qiime2 with comment lines removed.}
 
-\item{tree_filename}{Numeric vector.}
+\item{tree_filename}{String. Input file name for count file. Default = "tree.nwk". The required file format is newick tree.}
 
-\item{f_taxaconfidence}{Numeric vector.}
+\item{taxaconfidence}{Numeric. Taxa confidence value. Default value = 0.9.}
 
-\item{f_grouping_inclusion}{Numeric vector.}
+\item{grouping_inclusion}{String vector. If only specific groups should be included in the analysis, indicate them here.}
 
-\item{min_req_sample_number}{Numeric vector.}
+\item{min_req_sample_number}{Numeric vector. Minimum number of samples required per group. Default = 8.}
+}
+\value{
+list
 }
 \description{
 This tool tracks microbiome variance and identifies bacterial genera responsible for significant variance shifts using 16S rRNA gene metabarcoding for longitudinal data.

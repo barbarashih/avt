@@ -6,22 +6,25 @@
 \usage{
 calculateVariance(
   avt_dat,
-  top_genus,
-  out_dir,
-  top_genus_num2 = 200,
-  top_eigen = 5
+  top_genera,
+  out_dir = "avt_out",
+  top_genera_num2 = 200,
+  top_eigen = 10,
+  seed = 123
 )
 }
 \arguments{
-\item{avt_dat}{Numeric vector.}
+\item{avt_dat}{List. Output from avt_data().}
 
-\item{top_genus}{Numeric vector.}
+\item{top_genera}{List. Output from topGenera().}
 
-\item{out_dir}{Numeric vector.}
+\item{out_dir}{String. File path to output directory.}
 
-\item{top_genus_num2}{Numeric vector.}
+\item{top_genera_num2}{Numeric. Number of genus to consider. Default set to 200.}
 
-\item{top_eigen}{Numeric vector.}
+\item{top_eigen}{Numeric. Number of top eigen vectors to consider. Default set to 10.}
+
+\item{seed}{Numeric.}
 }
 \description{
 this function takes the output from organised data and top genus list
