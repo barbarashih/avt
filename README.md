@@ -23,7 +23,7 @@ This tool tracks microbiome variance and identifies bacterial genera responsible
 #### Install avt from github
         install_github("barbarashih/avt")
 
-### Check the installation with the test dataset
+### Test the installation with the test dataset
 Download the test data folder ("avt_test_data") from this github.
 
 Set the working directory to avt_test_data.
@@ -51,3 +51,13 @@ Print a summary on variance change with the removal of each genus.
         variance_change_summary <- orderedVarianceChange(top_genera_variance)
 
 The default output folder name is "avt_out". 
+
+### Required input files
+The function avt_data organises the input files. The following input files are required:
+<ul>
+<li>data_dir: the name of the directory containing the following input files</li>
+<li>count_filename: the file name for the tab-delimited OTU table from Qiime2 (default = "OTU.txt")</li>
+<li>taxa_filename: the file name for the tab-delimited feature classification output from Qiime2 (default = "taxonomy.tsv")</li>
+<li>meta_filename: the metadata file name used as input for Qiime2 (default = "MetaDB.txt") </li>
+<li>tree_filename: the tree file name from Qiime2 (default = "tree.nwk") </li>
+</ul>
